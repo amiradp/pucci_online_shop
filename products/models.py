@@ -6,10 +6,19 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-        
+
+
+class Vendor(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, related_name='products', on_delete=models.CASCADE)
 
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)

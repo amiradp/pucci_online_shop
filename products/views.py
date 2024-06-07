@@ -14,7 +14,7 @@ def product_list(request, category_slug=None):
     return render(request, 'products/product_list.html', {
                     'category': category,
                     'categories': categories,
-                    'products': products
+                    'products': products,
                     })
 
 # def product_detail(request, id, slug):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product, Vendor, Images
+from .models import Category, Product, Vendor, Images, Comment
 
 
 @admin.register(Category)
@@ -20,6 +20,11 @@ class VendorAdmin(admin.ModelAdmin):
 class ProductImagesInline(admin.StackedInline):
     model = Images
 
+
+class CommentInLine(admin.TabularInline):
+   model = Comment
+   fields = ['author', 'body', 'active', ]
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
    list_display = ['name', 'slug', 'price', 'quantity', 'size', 'available', 'created', 'updated']
@@ -27,5 +32,11 @@ class ProductAdmin(admin.ModelAdmin):
    list_editable = ['price', 'available']
    prepopulated_fields = {'slug': ('name',)}
 
-   inlines = [ProductImagesInline]
+   inlines = [
+      ProductImagesInline,
+      CommentInLine
+      ]
    
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['product', 'author', 'body', 'active', ]

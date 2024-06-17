@@ -1,7 +1,8 @@
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
 
-from .models import Category, Product
+from .models import Category, Product, Comment
+from .forms import CommentForm
 
 class ProductListView(generic.ListView):
     model = Product
@@ -33,3 +34,19 @@ class ProductDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
+
+class CommentCreateView(generic.CreateView):
+    model = Comment
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.author = self.request.user
+
+        product_id = int(self.kwargs['pk'])
+        product = get_object_or_404(Product, id=product_id)
+
+        obj.product = product
+
+        return super().form_valid(form)

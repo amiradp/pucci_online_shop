@@ -1,5 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
+from django.contrib.auth import get_user_model
+
 
 # this model make category for products
 class Category(models.Model):
@@ -56,3 +58,18 @@ class Product(models.Model):
 class Images (models.Model):
     product = models.ForeignKey(Product, default=None, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
+
+
+class Comment(models.Model):
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments', )
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments', )
+    body = models.TextField(verbose_name= 'Comment Text')
+
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
+
+    active = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse('product_detail', args=[self.product.id])

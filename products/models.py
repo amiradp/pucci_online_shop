@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 
 # this model make category for products
 class Category(models.Model):

@@ -19,6 +19,7 @@ class Vendor(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     # this is size of product for user choice
     PRODUCT_SIZE = [
